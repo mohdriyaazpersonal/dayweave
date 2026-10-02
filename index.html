@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#4c6fbd" />
+    <meta
+      name="description"
+      content="A calm, private calendar for work, life, and everything in between."
+    />
+    <title>Dayweave — Make space for your day</title>
+    <link rel="stylesheet" href="base.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to calendar</a>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="brand" href="./"
+          ><svg viewBox="0 0 32 32" aria-hidden="true">
+            <rect x="2" y="4" width="28" height="26" rx="8" />
+            <path d="M10 1v8M22 1v8M9 15h5m4 0h5M9 22h5m4 0h5" /></svg
+          >dayweave<span>®</span></a
+        >
+        <p class="tagline">A little room for everything.</p>
+        <button id="new-event" class="primary new">＋ Create event</button>
+        <div class="mini-heading row spread">
+          <strong id="mini-title"></strong>
+          <div>
+            <button id="mini-prev" aria-label="Previous mini calendar month">
+              ‹</button
+            ><button id="mini-next" aria-label="Next mini calendar month">
+              ›
+            </button>
+          </div>
+        </div>
+        <div class="mini-days" aria-hidden="true">
+          <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span
+          ><span>S</span><span>S</span>
+        </div>
+        <div id="mini-calendar" class="mini-grid"></div>
+        <div class="calendars">
+          <p class="nav-label">MY CALENDARS <span>3</span></p>
+          <label
+            ><input type="checkbox" value="Work" checked /><span
+              class="category-dot work"
+            ></span
+            >Work<span id="count-Work"></span></label
+          ><label
+            ><input type="checkbox" value="Personal" checked /><span
+              class="category-dot personal"
+            ></span
+            >Personal<span id="count-Personal"></span></label
+          ><label
+            ><input type="checkbox" value="Learning" checked /><span
+              class="category-dot learning"
+            ></span
+            >Learning<span id="count-Learning"></span
+          ></label>
+        </div>
+        <div class="sidebar-bottom">
+          <div class="local-note">
+            <span class="local-icon">⌁</span
+            ><strong>Your day, your space.</strong>
+            <p>
+              Saved in this browser. Import and export calendars as .ics files.
+            </p>
+          </div>
+          <button id="import" class="nav-button">↑ Import calendar</button
+          ><input
+            type="file"
+            id="import-file"
+            accept=".ics,text/calendar"
+            hidden
+          /><button id="export" class="nav-button">↓ Export all events</button
+          ><button id="reset" class="nav-button muted">Reset calendar</button>
+        </div>
+      </aside>
+      <div class="workspace">
+        <header class="topbar">
+          <span>My workspace <span>/</span> Calendar</span
+          ><span class="device-badge"><i></i> Local calendar</span>
+        </header>
+        <main id="main">
+          <div class="page-heading row spread wrap">
+            <div>
+              <p class="eyebrow">MAKE SPACE FOR WHAT MATTERS</p>
+              <h1>A day, well woven<span>.</span></h1>
+              <p class="muted">Work, life, and the moments in between.</p>
+            </div>
+            <div class="today-card">
+              <span id="today-weekday"></span><strong id="today-day"></strong>
+            </div>
+          </div>
+          <div id="demo-banner" class="demo-banner" hidden>
+            <span>Sample events are here to help you explore.</span
+            ><button id="clear-demo">Start your own calendar →</button>
+          </div>
+          <div class="calendar-layout">
+            <section class="calendar-panel" aria-label="Calendar">
+              <div class="calendar-toolbar row spread wrap">
+                <div class="row">
+                  <h2 id="calendar-title"></h2>
+                  <div class="nav-arrows">
+                    <button id="previous" aria-label="Previous period">‹</button
+                    ><button id="next" aria-label="Next period">›</button>
+                  </div>
+                  <button id="today">Today</button>
+                </div>
+                <div class="view-toggle">
+                  <button id="month-view" aria-pressed="true">Month</button
+                  ><button id="week-view" aria-pressed="false">Week</button>
+                </div>
+              </div>
+              <div class="weekday-header" aria-hidden="true">
+                <span>MON</span><span>TUE</span><span>WED</span><span>THU</span
+                ><span>FRI</span><span>SAT</span><span>SUN</span>
+              </div>
+              <div
+                id="calendar-grid"
+                class="calendar-grid"
+                role="group"
+                aria-label="Calendar dates"
+              ></div>
+              <div class="calendar-foot row spread wrap">
+                <span
+                  ><i class="category-dot work"></i> Work
+                  <i class="category-dot personal"></i> Personal
+                  <i class="category-dot learning"></i> Learning</span
+                ><span id="visible-count"></span>
+              </div>
+            </section>
+            <aside class="agenda">
+              <div class="agenda-heading">
+                <p class="eyebrow">YOUR DAILY VIEW</p>
+                <h2 id="agenda-date"></h2>
+                <p id="agenda-count" class="muted"></p>
+              </div>
+              <div id="agenda-events"></div>
+              <button id="add-selected" class="agenda-add">
+                ＋ Add to this day
+              </button>
+              <div class="gentle-note">
+                <svg viewBox="0 0 60 45" aria-hidden="true">
+                  <path
+                    d="M30 39V13m0 16C8 28 9 7 9 7s22-1 21 22zm0-6C49 23 50 4 50 4S30 2 30 23z"
+                  />
+                </svg>
+                <p>
+                  You don’t have to fill every hour.<br />Leave a little room to
+                  breathe.
+                </p>
+              </div>
+            </aside>
+          </div>
+          <footer class="row spread wrap">
+            <span>Thoughtfully planned. Fully yours.</span
+            ><span>Local only · No automatic account sync</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+    <dialog id="editor">
+      <form id="event-form">
+        <div class="row spread">
+          <h2 id="editor-title">Make a little space</h2>
+          <button type="button" class="close" aria-label="Close event dialog">
+            ✕
+          </button>
+        </div>
+        <input type="hidden" name="id" /><label
+          >Event title<input
+            name="title"
+            required
+            maxlength="180"
+            placeholder="What’s on your mind?"
+        /></label>
+        <div class="form-grid">
+          <label
+            >Calendar<select name="category">
+              <option>Work</option>
+              <option>Personal</option>
+              <option>Learning</option>
+            </select></label
+          ><label class="check-label"
+            ><input name="allDay" type="checkbox" /> All-day event</label
+          >
+        </div>
+        <div class="form-grid">
+          <label
+            >Starts<input name="start" type="datetime-local" required /></label
+          ><label
+            ><span id="end-label">Ends</span
+            ><input name="end" type="datetime-local" required
+          /></label>
+        </div>
+        <p id="date-hint" class="muted input-hint">
+          Times use your device’s local time zone.
+        </p>
+        <label
+          >Location<input
+            name="location"
+            maxlength="500"
+            placeholder="A place, a link, or a quiet corner" /></label
+        ><label
+          >Notes<textarea
+            name="notes"
+            maxlength="8000"
+            placeholder="A few details for your future self…"
+          ></textarea>
+        </label>
+        <p id="form-error" role="alert" class="error"></p>
+        <div class="row spread wrap">
+          <button id="delete" type="button" class="danger">Delete event</button>
+          <div class="row">
+            <button class="close" type="button">Cancel</button
+            ><button type="submit" class="primary">Save event</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="reset-dialog">
+      <h2>Begin with a little space</h2>
+      <p>
+        This replaces all events stored in this browser. Export an .ics file
+        first to keep a copy.
+      </p>
+      <div class="grid">
+        <button id="clear-confirm" class="primary">
+          Start with an empty calendar</button
+        ><button id="demo-confirm">Load sample events</button
+        ><button id="reset-cancel">Keep my calendar</button>
+      </div>
+    </dialog>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
